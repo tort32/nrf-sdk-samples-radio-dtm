@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"nrf-connect.boardRoots": [
+			"${workspaceFolder}"
+		]
+	}
+	"extensions": {
+		"recommendations": [
+			"nordic-semiconductor.nrf-connect-extension-pack",
+			"nordic-semiconductor.nrf-connect"
+		]
+	}
+}

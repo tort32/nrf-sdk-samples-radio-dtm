@@ -1,0 +1,23 @@
+/*
+ * SlimeVR Butterfly Dongle (nRF52833): DTM over USB CDC ACM.
+ *
+ * The board has no pins for an external UART chip, so the 2-wire DTM transport
+ * uses the virtual COM port provided by the USB device stack.
+ */
+
+/ {
+	chosen {
+		ncs,dtm-uart = &cdc_acm_uart0;
+	};
+};
+
+&cdc_acm_uart0 {
+	/* Virtual port: USB ignores this value, but dtm_uart_wait.c derives the
+	 * UART poll cycle from it.
+	 */
+	current-speed = <19200>;
+};
+
+&radio {
+	/delete-property/ dfe-supported;
+};

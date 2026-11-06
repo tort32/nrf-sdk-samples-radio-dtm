@@ -415,6 +415,35 @@ Use the following command:
 
    west build samples/bluetooth/direct_test_mode -b nrf5340dk/nrf5340/cpunet -- -DSHIELD=nrf21540ek -DFILE_SUFFIX=usb
 
+SlimeVR Butterfly Dongle (UF2)
+==============================
+
+The ``butterfly_dg1_uf2/nrf52833`` board (:file:`boards/slimevr/butterfly_dg1`) has no pins for an external UART chip.
+The board overlay and configuration (:file:`boards/butterfly_dg1_uf2_nrf52833.overlay` and :file:`boards/butterfly_dg1_uf2_nrf52833.conf`) therefore select the USB CDC ACM virtual COM port of the nRF52833 as the DTM interface.
+The baud rate is not used by USB, so any value works in the terminal or tester.
+Direction finding is disabled on this board because it has no antenna-switching pins, and the front-end module is configured from the board devicetree.
+
+Build the sample with the following command:
+
+.. code-block:: console
+
+   west build samples/bluetooth/direct_test_mode -b butterfly_dg1_uf2/nrf52833 -- -DBOARD_ROOT=<absolute path to samples/bluetooth/direct_test_mode>
+
+.. note::
+   The ``-DBOARD_ROOT`` argument is required because sysbuild looks up the board before it adds the sample directory to the board roots.
+
+The build produces :file:`build/direct_test_mode/zephyr/zephyr.uf2`, which you can flash with the Adafruit UF2 bootloader of the dongle:
+
+1. Enter the bootloader.
+   Hold the button (``sw0``) while plugging in the dongle.
+#. Copy :file:`zephyr.uf2` to the ``SLIMEVR-DG`` drive that appears.
+#. The dongle restarts and enumerates as a COM port called "SlimeVR Butterfly Dongle DTM".
+
+.. note::
+   * The image is linked at ``0x1000`` (right after the MBR).
+   * The Adafruit bootloader sets the UICR ``REGOUT0`` register to 3.3 V, which powers the front-end module.
+   * The DC/DC converter configuration is not supported and must stay disabled for this board.
+
 .. _dtm_testing:
 
 Testing
